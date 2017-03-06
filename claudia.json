@@ -1,0 +1,11 @@
+{
+  "lambda": {
+    "role": "belugas-bot-executor",
+    "name": "belugas-bot",
+    "region": "eu-west-2"
+  },
+  "api": {
+    "id": "0kcg00hofa",
+    "module": "bot"
+  }
+}
