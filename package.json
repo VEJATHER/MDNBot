@@ -1,0 +1,43 @@
+{
+  "name": "belugas-bot",
+  "version": "1.0.0",
+  "description": "MDN search bot",
+  "main": "index.js",
+  "scripts": {
+   //only for lambda functions
+   //  "test": "claudia test-lambda --event event.json",
+   // "create": "claudia create --region eu-west-2 --handler index.handler",
+   //needed only on first deploy
+    "deploy": "claudia create --region eu-west-2 --use-local-dependencies --api-module bot",
+    //use this after modifying the code to have it redeployed
+    "update": "claudia update --use-local-dependencies",
+    //use this to connect the bot to other platforms
+    "configure-facebook": "claudia update --configure-fb-bot",
+    "configure-skype": "claudia update --configure-skype-bot",
+    "configure-telegram": "claudia update --configure-telegram-bot",
+    //use this if you create a new slack integration with new authentication tokes
+    "configure-slack": "claudia update --use-local-dependencies  --configure-slack-slash-app",
+    //use this to see a list of available npm tasks
+    "start": "ntl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VEJATHER/belugas-bot.git"
+  },
+  "keywords": [
+    "mdn",
+    "bot",
+    "slackbot"
+  ],
+  "author": "VEJATHER",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VEJATHER/belugas-bot/issues"
+  },
+  "homepage": "https://github.com/VEJATHER/belugas-bot#readme",
+  "devDependencies": {
+    "claudia": "^2.9.0",
+    "claudia-bot-builder": "^2.14.1",
+    "ntl": "^1.2.0"
+  }
+}
