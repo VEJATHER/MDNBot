@@ -1,0 +1,33 @@
+{
+  "name": "belugas-bot",
+  "version": "1.0.0",
+  "description": "MDN search bot",
+  "main": "index.js",
+  "scripts": {
+    "create": "claudia create --region us-east-1 --api-module api",
+    "configure-facebook": "claudia update --configure-fb-bot",
+    "configure-skype": "claudia update --configure-skype-bot",
+    "configure-telegram": "claudia update --configure-telegram-bot",
+    "configure-slack": "claudia update --configure-slack-slash-command",
+    "start": "ntl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VEJATHER/belugas-bot.git"
+  },
+  "keywords": [
+    "mdn",
+    "bot",
+    "slackbot"
+  ],
+  "author": "VEJATHER",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VEJATHER/belugas-bot/issues"
+  },
+  "homepage": "https://github.com/VEJATHER/belugas-bot#readme",
+  "devDependencies": {
+    "claudia": "^2.9.0",
+    "ntl": "^1.2.0"
+  }
+}
