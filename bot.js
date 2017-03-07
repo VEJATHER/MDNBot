@@ -19,14 +19,16 @@ module.exports = botBuilder(function (request) {
 		return req(url, function (error, response, body) {
 			if(!error && response.statusCode == 200) {
 				var data = JSON.parse(body);
-				return `Recived ${data["documents"][0]["title"]}`;
+				return {
+					"text": data["documents"][0]["title"]
+				};
 			}
 		});
 	} else {
 		 return {
-				"response_type": "in_channel",
-				"text":"Thanks for sending " + request.text  + ". Your message is very important to us, but we're not functional yet"
-	  			}
+			"response_type": "in_channel",
+			"text":"Thanks for sending " + request.text  + ". Your message is very important to us, but we're not functional yet"
+	  	}
 	}
 });
 
