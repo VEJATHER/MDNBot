@@ -18,9 +18,10 @@ module.exports = botBuilder(function (request) {
             }
 			requestPromise.get(url).then(function (response) {
 				//var message = new slackTemplate();
+				return response;
 				response.documents.forEach(function (entry) {
-					//message.addAtachment("A1").addTitle(entry.title, entry.url).get();
-					return entry.title;
+					//message.addAttachment("A1").addTitle(entry.title, entry.url).get();
+					//return entry.title;
 				});
     			//return message;
   			},
