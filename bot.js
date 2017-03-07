@@ -1,6 +1,6 @@
 var botBuilder = require('claudia-bot-builder');
 var slackTemplate = botBuilder.slackTemplate;
-var requestPromise = require('minimal-request-promise');
+var req= require('request');
 
 module.exports = botBuilder(function (request) {
 	if(request.text) {
@@ -8,27 +8,22 @@ module.exports = botBuilder(function (request) {
 			topic,
 			url,
 			reqArr = request.text.split(" ");
-			if(reqArr.length > 1) {
-                topic = reqArr.splice(reqArr.length - 1)[0];
-                q = reqArr.join(" ");
-                url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
-            } else {
-                q = reqArr.join(" ");
-                url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
-            }
-			requestPromise.get(url).then(function (response) {
-				//var message = new slackTemplate();
-				return response;
-				response.documents.forEach(function (entry) {
-					//message.addAttachment("A1").addTitle(entry.title, entry.url).get();
-					//return entry.title;
-				});
-    			//return message;
-  			},
-  			function (response) {
-    			console.log('got error');
-  			}
-		);
+		if(reqArr.length > 1) {
+			topic = reqArr.splice(reqArr.length - 1)[0];
+			q = reqArr.join(" ");
+			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
+		} else {
+			q = reqArr.join(" ");
+			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
+		}
+		req(url, function (error, response, body) {
+			if(!error && response.statusCode == 200) {
+				var data = JSON.parse(body);
+				return {
+					"text": data["documents"][0]["title"]
+				}
+			}
+		});
 	} else {
 		 return {
 				"response_type": "in_channel",
