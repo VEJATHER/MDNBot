@@ -17,11 +17,12 @@ module.exports = botBuilder(function (request) {
                 url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
             }
 			requestPromise.get(url).then(function (response) {
-				var message = new slackTemplate();
+				//var message = new slackTemplate();
 				response.documents.forEach(function (entry) {
-					message.addAtachment("A1").addTitle(entry.title, entry.url).get();
+					//message.addAtachment("A1").addTitle(entry.title, entry.url).get();
+					return entry.title;
 				});
-    			return message;
+    			//return message;
   			},
   			function (response) {
     			console.log('got error');
