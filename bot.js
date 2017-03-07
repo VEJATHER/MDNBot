@@ -19,9 +19,7 @@ module.exports = botBuilder(function (request) {
 		req(url, function (error, response, body) {
 			if(!error && response.statusCode == 200) {
 				var data = JSON.parse(body);
-				return {
-					"text": data["documents"][0]["title"]
-				}
+				return `Recived ${data["documents"][0]["title"]}`
 			}
 		});
 	} else {
