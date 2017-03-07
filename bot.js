@@ -27,12 +27,12 @@ module.exports = botBuilder(function (request) {
     			console.log('got error');
   			}
 		);
-	}
-      return {
+	} else {
+		 return {
 				"response_type": "in_channel",
-				"text":"Thanks for sending " + request.text  + 
-      ". Your message is very important to us, but we're not functional yet"
-	  }
+				"text":"Thanks for sending " + request.text  + ". Your message is very important to us, but we're not functional yet"
+	  			}
+	}
 });
 
 // exports.handler = function (event, context) {
