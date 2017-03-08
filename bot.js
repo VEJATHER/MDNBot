@@ -30,10 +30,11 @@ module.exports = botBuilder(function (request) {
 		};
 		return rp(options)
 		.then(function (data) {
-			var titles = data.documents.map(function (entry) {
-				return entry.title;
+			var searchResults = new slackTemplate("The results of search for: " + request.text);
+			data.documents.forEach(function (entry) {
+				return searchResults.addAttachment('A1').addTitle(entry.title, entry.url).addText(entry.excerpt);
 			});
-			return titles;
+			return searchResults.channelMessage(true).get();
 		})
 		.catch(function (err) {
 			console.log(err); 
