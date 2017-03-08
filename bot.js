@@ -1,9 +1,9 @@
 var botBuilder = require('claudia-bot-builder');
 var slackTemplate = botBuilder.slackTemplate;
-var req= require('request');
+var rp= require('request-promise');
 
 module.exports = botBuilder(function (request) {
-	if(request.text) {
+	if(request.text.length === 0 && !request.text.trim()) {
 		var q,
 			topic,
 			url,
@@ -16,13 +16,22 @@ module.exports = botBuilder(function (request) {
 			q = reqArr.join(" ");
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
 		}
-		return req(url, function (error, response, body) {
-			if(!error && response.statusCode == 200) {
-				var data = JSON.parse(body);
-				return {
-					"text": data["documents"][0]["title"]
-				};
-			}
+		var options = {
+    		uri: url,
+			headers: {
+				'User-Agent': 'Request-Promise'
+			},
+			json: true // Automatically parses the JSON string in the response 
+		};
+		return rp(options)
+		.then(function (data) {
+			var titles = data.documents.map(function (entry) {
+				return entry.title;
+			});
+			return titles;
+		})
+		.catch(function (err) {
+			// API call failed... 
 		});
 	} else {
 		 return {
