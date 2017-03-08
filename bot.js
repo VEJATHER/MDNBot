@@ -4,6 +4,11 @@ var rp= require('request-promise');
 
 module.exports = botBuilder(function (request) {
 	if(request.text.length === 0 && !request.text.trim()) {
+		 return {
+			"response_type": "in_channel",
+			"text":"Thanks for sending " + request.text  + ". Your message is very important to us, but we're not functional yet"
+	  	}
+	} else {
 		var q,
 			topic,
 			url,
@@ -31,13 +36,8 @@ module.exports = botBuilder(function (request) {
 			return titles;
 		})
 		.catch(function (err) {
-			// API call failed... 
+			console.log(err); 
 		});
-	} else {
-		 return {
-			"response_type": "in_channel",
-			"text":"Thanks for sending " + request.text  + ". Your message is very important to us, but we're not functional yet"
-	  	}
 	}
 });
 
