@@ -7,7 +7,7 @@ module.exports = botBuilder(function (request) {
 	if(request.text.length === 0 && !request.text.trim()) {
 		 return {
 			"response_type": "in_channel",
-			"text":"Hello! I am MDN bot and will make your developers life easier, by searching MDN for you. Start your search by typing /mdnbot <searchTerm>. Example: /mdnbot reduce. If you want to filter your search results by topic, type topic as last. Example: /mdnbot reduce js. By default the search results returned will be visible only to you. If you want to show certain link to aanother developer, type /mdnbot show <searchTerm> <searchTopic> and the very first result of my search will be displayed. Example: /mdnbot show reduce(). Happy search!"
+			"text":"Hello! I am MDN bot and will make your developers life easier, by searching MDN for you. Start your search by typing /mdnbot <searchTerm>. Example: /mdnbot reduce. If you want to filter your search results by topic, type topic as last. Example: /mdnbot reduce js. By default the search results returned will be visible only to you. If you want to show certain link to another developer, type /mdnbot show <searchTerm> <searchTopic> and the very first result of my search will be displayed. Example: /mdnbot show reduce(). Happy search!"
 	  	}
 	} else {
 		var q,
@@ -34,7 +34,7 @@ module.exports = botBuilder(function (request) {
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
 			return rp(setOptions(url))
 			.then(function (data) {
-				var publicResult = new slackTemplate("The results of search for: " + request.text);
+				var publicResult = new slackTemplate("The results of search for: " + q);
 				return publicResult
 				.addAttachment('A1')
 				.addTitle(data.documents[0].title, data.documents[0].url)
@@ -49,7 +49,7 @@ module.exports = botBuilder(function (request) {
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
 			return rp(setOptions(url))
 			.then(function (data) {
-				var privatResultWithTopic = new slackTemplate("The results of search for: " + request.text);
+				var privatResultWithTopic = new slackTemplate("The results of search for: " + q + " topic: " + topic);
 				data.documents.forEach(function (entry) {
 					return privatResultWithTopic.addAttachment('A1').addTitle(entry.title, entry.url).addText(entry.excerpt.replace(/(<([^>]+)>)/ig,""));
 				});
