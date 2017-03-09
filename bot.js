@@ -7,7 +7,7 @@ module.exports = botBuilder(function (request) {
 	if(request.text.length === 0 && !request.text.trim()) {
 		 return {
 			"response_type": "in_channel",
-			"text":"Hello! I am MDN bot and will make your developers life easier, by searching MDN for you."
+			"text":"Hello! I am MDN bot and will make your developers life easier, by searching MDN for you. Start your search by typing /mdnbot <searchTerm>. Example: /mdnbot reduce. If you want to filter your search results by topic, type topic as last. Example: /mdnbot reduce js. By default the search results returned will be visible only to you. If you want to show certain link to aanother developer, type /mdnbot show <searchTerm> <searchTopic> and the very first result of my search will be displayed. Example: /mdnbot show reduce(). Happy search!"
 	  	}
 	} else {
 		var q,
