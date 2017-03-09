@@ -1,6 +1,7 @@
 var botBuilder = require('claudia-bot-builder');
 var slackTemplate = botBuilder.slackTemplate;
 var rp= require('request-promise');
+var setOptions = require("./helpers").setOptions;
 
 module.exports = botBuilder(function (request) {
 	if(request.text.length === 0 && !request.text.trim()) {
@@ -13,18 +14,11 @@ module.exports = botBuilder(function (request) {
 			topic,
 			url,
 			reqArr = request.text.split(" ");
-			var options = {
-				uri: url,
-				headers: {
-					'User-Agent': 'Request-Promise'
-				},
-				json: true // Automatically parses the JSON string in the response 
-			};
 		if(reqArr.length > 2 && reqArr[0] === "show") {
 			topic = reqArr.splice(reqArr.length - 1)[0];
 			q = reqArr.slice(1).join(" ");
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
-			return rp(options)
+			return rp(setOptions(url))
 			.then(function (data) {
 				var publicResultWithTopic = new slackTemplate("The results of search for: " + request.text);
 				return publicResultWithTopic
@@ -38,7 +32,7 @@ module.exports = botBuilder(function (request) {
 		} else if(reqArr.length > 1 && reqArr[0] === "show") {
 			q = reqArr.slice(1).join(" ");
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
-			return rp(options)
+			return rp(setOptions(url))
 			.then(function (data) {
 				var publicResult = new slackTemplate("The results of search for: " + request.text);
 				return publicResult
@@ -53,7 +47,7 @@ module.exports = botBuilder(function (request) {
 			topic = reqArr.splice(reqArr.length - 1)[0];
 			q = reqArr.join(" ");
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
-			return rp(options)
+			return rp(setOptions(url))
 			.then(function (data) {
 				var privatResultWithTopic = new slackTemplate("The results of search for: " + request.text);
 				data.documents.forEach(function (entry) {
@@ -67,7 +61,7 @@ module.exports = botBuilder(function (request) {
 		} else {
 			q = reqArr.join(" ");
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
-			return rp(options)
+			return rp(setOptions(url))
 			.then(function (data) {
 				var privateResult = new slackTemplate("The results of search for: " + request.text);
 				data.documents.forEach(function (entry) {
@@ -81,9 +75,3 @@ module.exports = botBuilder(function (request) {
 		}
 	}
 });
-
-// exports.handler = function (event, context) {
-// 	console.log(event);
-// 	context.succeed('hello ' + event.name);
-// };
-
