@@ -30,7 +30,7 @@ module.exports = botBuilder(function (request) {
 				return publicResultWithTopic
 				.addAttachment('A1')
 				.addTitle(data.documents[0].title, data.documents[0].url)
-				.addText(data.documents[0].excerpt.replace(/(<([^>]+)>)/ig,"")).get();
+				.addText(data.documents[0].excerpt.replace(/(<([^>]+)>)/ig,"")).channelMessage(true).get();
 			})
 			.catch(function (err) {
 				console.log(err); 
@@ -44,7 +44,7 @@ module.exports = botBuilder(function (request) {
 				return publicResult
 				.addAttachment('A1')
 				.addTitle(data.documents[0].title, data.documents[0].url)
-				.addText(data.documents[0].excerpt.replace(/(<([^>]+)>)/ig,"")).get();
+				.addText(data.documents[0].excerpt.replace(/(<([^>]+)>)/ig,"")).channelMessage(true).get();
 			})
 			.catch(function (err) {
 				console.log(err); 
