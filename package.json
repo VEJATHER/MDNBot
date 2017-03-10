@@ -31,5 +31,9 @@
     "claudia": "^2.9.0",
     "claudia-bot-builder": "^2.14.1",
     "ntl": "^1.2.0"
+  },
+  "dependencies": {
+    "request": "^2.80.0",
+    "request-promise": "^4.1.1"
   }
 }
