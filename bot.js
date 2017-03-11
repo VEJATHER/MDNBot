@@ -4,6 +4,7 @@ var rp= require('request-promise');
 var setOptions = require("./helpers").setOptions;
 
 module.exports = botBuilder(function (request) {
+	return request.command;
 	var q,
 		topic,
 		index,
