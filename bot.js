@@ -8,13 +8,15 @@ module.exports = botBuilder(function (request) {
 		topic,
 		index,
 		url,
-		reqArr = request.text.split(" ");
+		reqArr;
 	if(request.command === "/mdnbot") {
 		 return {
 			"response_type": "in_channel",
 			"text":"Hello! I am MDN bot and will make your developers life easier, by searching MDN for you. Start your search by typing /mdnbot <searchTerm>. Example: /mdnbot reduce. If you want to filter your search results by topic, type topic as last. Example: /mdnbot reduce js. By default the search results returned will be visible only to you. If you want to show certain link to another developer, type /mdnbot show <searchTerm> <searchTopic> and the very first result of my search will be displayed. Example: /mdnbot show reduce(). Happy search!"
 	  	}
-	} else if(request.command === "/mdnbot-show") {
+	} 
+	if(request.command === "/mdnbot-show") {
+		reqArr = request.text.split(" ");
 		var parsedIndex = parseInt(reqArr[0]);
 		index = parssedIndex !== NaN && parssedIndex >= 1 && parssedIndex <= 10 ? parssedIndex - 1 : 0;
 		if(reqArr.length > 2) {
@@ -47,7 +49,9 @@ module.exports = botBuilder(function (request) {
 				console.log(err); 
 			});
 		}
-	 } else if(request.command === "/mdnbot-search") {
+	 } 
+	 if(request.command === "/mdnbot-search") {
+		 reqArr = request.text.split(" ");
 		 if(reqArr.length > 1) {
 			topic = reqArr.splice(reqArr.length - 1)[0];
 			q = reqArr.join(" ");
