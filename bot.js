@@ -3,20 +3,28 @@ var slackTemplate = botBuilder.slackTemplate;
 var rp= require('request-promise');
 var setOptions = require("./helpers").setOptions;
 
-module.exports = botBuilder(function (request) {
+module.exports = botBuilder(function (message) {
 	var q,
 		topic,
 		index,
 		url,
 		reqArr;
-	if(request.command === "/mdnbot") {
+	if(message.originalRequest.command === "/mdnbot") {
 		 return {
+			"mrkdwn": true,
 			"response_type": "in_channel",
-			"text":"Hello! I am MDN bot and will make your developers life easier, by searching MDN for you. Start your search by typing /mdnbot <searchTerm>. Example: /mdnbot reduce. If you want to filter your search results by topic, type topic as last. Example: /mdnbot reduce js. By default the search results returned will be visible only to you. If you want to show certain link to another developer, type /mdnbot show <searchTerm> <searchTopic> and the very first result of my search will be displayed. Example: /mdnbot show reduce(). Happy search!"
+			"text":[
+			 "Hello " + message.originalRequest.user_name + "!",
+			 "I am MDN bot and will make your developers life easier, by searching MDN for you.",
+			 "If you use */mdnbot-search* you'll get results visible only to you. Example: `/mdnbot-search window.open js`",
+			 "If you want to show some of the results to a fellow developer use */mdnbot-show* command and I'll show the result you asked me to. Example: `/mdnbot-show 2 window.open js`",
+			 "It helps if you type a topic as last word.",
+			 "Happy mdn-searching!"
+			]
 	  	}
 	} 
-	if(request.command === "/mdnbot-show") {
-		reqArr = request.text.split(" ");
+	if(message.originalRequest.command === "/mdnbot-show") {
+		reqArr = message.text.split(" ");
 		var parsedIndex = parseInt(reqArr[0]);
 		index = parssedIndex !== NaN && parssedIndex >= 1 && parssedIndex <= 10 ? parssedIndex - 1 : 0;
 		if(reqArr.length > 2) {
@@ -25,7 +33,7 @@ module.exports = botBuilder(function (request) {
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
 			return rp(setOptions(url))
 			.then(function (data) {
-				var publicResultWithTopic = new slackTemplate("The results of search for: " + request.text);
+				var publicResultWithTopic = new slackTemplate("The results of search for: " + message.text);
 				return publicResultWithTopic
 				.addAttachment('A1')
 				.addTitle(data.documents[index].title, data.documents[index].url)
@@ -50,8 +58,8 @@ module.exports = botBuilder(function (request) {
 			});
 		}
 	 } 
-	 if(request.command === "/mdnbot-search") {
-		 reqArr = request.text.split(" ");
+	 if(message.originalRequest.command === "/mdnbot-search") {
+		 reqArr = message.text.split(" ");
 		 if(reqArr.length > 1) {
 			topic = reqArr.splice(reqArr.length - 1)[0];
 			q = reqArr.join(" ");
@@ -73,7 +81,7 @@ module.exports = botBuilder(function (request) {
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
 			return rp(setOptions(url))
 			.then(function (data) {
-				var privateResult = new slackTemplate("The results of search for: " + request.text);
+				var privateResult = new slackTemplate("The results of search for: " + message.text);
 				data.documents.forEach(function (entry, i) {
 					i = i + 1;
 					return privateResult.addAttachment('A1').addTitle(i + ". " + entry.title, entry.url).addText(entry.excerpt.replace(/(<([^>]+)>)/ig,""));
@@ -85,4 +93,4 @@ module.exports = botBuilder(function (request) {
 			});
 		}
 	}
-});
+}, { platforms: ['slackSlashCommand'] });
