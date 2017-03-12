@@ -13,19 +13,12 @@ module.exports = botBuilder(function (message) {
 		 return {
 			"mrkdwn": true,
 			"response_type": "in_channel",
-			"text":[
-			 "Hello " + message.originalRequest.user_name + "!",
-			 "I am MDN bot and will make your developers life easier, by searching MDN for you.",
-			 "If you use */mdnbot-search* you'll get results visible only to you. Example: `/mdnbot-search window.open js`",
-			 "If you want to show some of the results to a fellow developer use */mdnbot-show* command and I'll show the result you asked me to. Example: `/mdnbot-show 2 window.open js`",
-			 "It helps if you type a topic as last word.",
-			 "Happy mdn-searching!"
-			]
+			"text":"Hello " + message.originalRequest.user_name + "! I am MDN bot and will make your developers life easier, by searching MDN for you.If you use */mdnbot-search* you'll get results visible only to you. Example: `/mdnbot-search window.open js` If you want to show some of the results to a fellow developer use */mdnbot-show* command and I'll show the result you asked me to. Example: `/mdnbot-show 2 window.open js` It helps if you type a topic as last word. Happy mdn-searching!"
 	  	}
 	} 
 	if(message.originalRequest.command === "/mdnbot-show") {
 		reqArr = message.text.split(" ");
-		var parsedIndex = parseInt(reqArr[0]);
+		var parssedIndex = parseInt(reqArr[0]);
 		index = parssedIndex !== NaN && parssedIndex >= 1 && parssedIndex <= 10 ? parssedIndex - 1 : 0;
 		if(reqArr.length > 2) {
 			topic = reqArr.splice(reqArr.length - 1)[0];
