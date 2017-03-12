@@ -26,7 +26,7 @@ module.exports = botBuilder(function (message) {
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
 			return rp(setOptions(url))
 			.then(function (data) {
-				var publicResultWithTopic = new slackTemplate("The results of search for: " + message.text);
+				var publicResultWithTopic = new slackTemplate("The result of search for: " + q + " topic: " + topic);
 				return publicResultWithTopic
 				.addAttachment('A1')
 				.addTitle(data.documents[index].title, data.documents[index].url)
@@ -40,7 +40,7 @@ module.exports = botBuilder(function (message) {
 			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
 			return rp(setOptions(url))
 			.then(function (data) {
-				var publicResult = new slackTemplate("The results of search for: " + q);
+				var publicResult = new slackTemplate("The result of search for: " + q);
 				return publicResult
 				.addAttachment('A1')
 				.addTitle(data.documents[index].title, data.documents[index].url)
