@@ -93,7 +93,7 @@ module.exports = botBuilder(function (message) {
 		url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
 		return rp(setOptions(url))
 		.then(function (data) {
-			var randomResult = new slackTemplate("The results of search for: " + message.text);
+			var randomResult = new slackTemplate("The results of search for: " + q);
 			data.documents.forEach(function (entry, i) {
 				i = i + 1;
 				return randomResult.addAttachment('A1').addTitle(i + ". " + entry.title, entry.url).addText(entry.excerpt.replace(/(<([^>]+)>)/ig,""));
