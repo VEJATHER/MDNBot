@@ -1,100 +1,98 @@
 'use strict';
 
-var botBuilder = require('claudia-bot-builder');
-var slackTemplate = botBuilder.slackTemplate;
-var rp = require('request-promise');
-var setOptions = require("./helpers").setOptions;
+let 	botBuilder = require('claudia-bot-builder'),
+    	slackTemplate = botBuilder.slackTemplate,
+    	requestPromise = require('request-promise'),
+    	setOptions = require("./helpers").setOptions;
 
+const   BASE_URL = "https://developer.mozilla.org/en-US/search.json",
+ 	    WELCOME_COMMAND = "/mdnbot",
+ 	    SHOW_COMMAND = "/mdnbot-show",
+ 	    SEARCH_COMMAND = "/mdnbot-search",
+ 	    RANDOM_COMMAND ="/mdnbot-random",
+ 	    TUTORIAL_COMMAND = "/mdnbot-tutorial";
+	
 module.exports = botBuilder(function (message) {
-	let q,
-	    topic,
-	    index,
-	    url,
-	    reqArr;
-	 const BASE_URL = "https://developer.mozilla.org/en-US/search.json";
-	if (message.originalRequest.command === "/mdnbot") {
-		return {
-			"mrkdwn": true,
-			"response_type": "in_channel",
-			"text": "Hello " + message.originalRequest.user_name + "! \n I am MDN bot and will make your developers life easier, by searching MDN for you. \n If you use */mdnbot-search* you'll get results visible only to you. Example: `/mdnbot-search window.open js` \n If you want to show some of the results to a fellow developer use */mdnbot-show* command and I'll show the result you asked me to. Example: `/mdnbot-show 2 window.open js` \n It helps if you type a topic as last word. Happy mdn-searching!"
+
+	let	reqArr = message.text.split(" ");
+		command = message.originalRequest.command;
+        topic = reqArr.length > 2 ? requestParams.splice(reqArr.length - 1)[0] : "",
+		q = requestParams.slice(1).join(" "), //this takes all params except the last as search terms
+		url = baseURL+"?q="+q,
+		url = topic !== "" ? url + "&topic=" + topic : url,
+		title = "The result of search for: " + q;
+		title = topic !== "" ? title + " topic: " + topic : title,// add topic to title text if a topic has been given as an argument by the user
+
+
+		switch(command){
+			case WELCOME_COMMAND:  
+				let username = message.originalRequest.user_name;
+				return { 
+					"mrkdwn": true,
+					"response_type": "in_channel",
+					"text": getWelcomMessage(username);
+				};
+			case SHOW_COMMAND: 	  
+				 handleShowCommand(reqArr);
+				 break;
+			case SEARCH_COMMAND: 
+				 handleSearchCommand(reqArr);
+				 break;
+			case RANDOM_COMMAND: 
+				 handleRandomCommand(reqArr);
+				 break;
+			case TUTORIAL_COMMAND: 
+				 handleTutorialCommand(reqArr);
+				 break;
+			default:
+			     console.log("No command was identified!");
+				 break;					  					  					  					  					  
+
 		};
-	}
-	if (message.originalRequest.command === "/mdnbot-show") {
-		reqArr = message.text.split(" ");
-		var parssedIndex = parseInt(reqArr[0]);
-		index = parssedIndex !== NaN && parssedIndex >= 1 && parssedIndex <= 10 ? parssedIndex - 1 : 0;
-		if (reqArr.length > 2) {
-			topic = reqArr.splice(reqArr.length - 1)[0];
-			q = reqArr.slice(1).join(" ");
-			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "&topic=" + topic;
-			return rp(setOptions(url)).then(function (data) {
-				var publicResultWithTopic = new slackTemplate("The result of search for: " + q + " topic: " + topic);
-				return publicResultWithTopic.addAttachment('A1').addTitle(data.documents[index].title, data.documents[index].url).addText(data.documents[index].excerpt.replace(/(<([^>]+)>)/ig, "")).channelMessage(true).get();
-			}).catch(function (err) {
-				console.log(err);
-			});
-		} else {
-			q = reqArr.slice(1).join(" ");
-			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
-			return rp(setOptions(url)).then(function (data) {
-				var publicResult = new slackTemplate("The result of search for: " + q);
-				return publicResult.addAttachment('A1').addTitle(data.documents[index].title, data.documents[index].url).addText(data.documents[index].excerpt.replace(/(<([^>]+)>)/ig, "")).channelMessage(true).get();
-			}).catch(function (err) {
-				console.log(err);
-			});
-		}
-	}
-	if (message.originalRequest.command === "/mdnbot-search") {
-		reqArr = message.text.split(" ");
-		if (reqArr.length > 1) {
-			topic = reqArr.splice(reqArr.length - 1)[0];
-			q = reqArr.join(" ");
-			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
-			return rp(setOptions(url)).then(function (data) {
-				var privatResultWithTopic = new slackTemplate("The results of search for: " + q + " topic: " + topic);
-				data.documents.forEach(function (entry, i) {
-					i = i + 1;
-					return privatResultWithTopic.addAttachment('A1').addTitle(i + ". " + entry.title, entry.url).addText(entry.excerpt.replace(/(<([^>]+)>)/ig, ""));
-				});
-				return privatResultWithTopic.get();
-			}).catch(function (err) {
-				console.log(err);
-			});
-		} else {
-			q = reqArr.join(" ");
-			url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
-			return rp(setOptions(url)).then(function (data) {
-				var privateResult = new slackTemplate("The results of search for: " + message.text);
-				data.documents.forEach(function (entry, i) {
-					i = i + 1;
-					return privateResult.addAttachment('A1').addTitle(i + ". " + entry.title, entry.url).addText(entry.excerpt.replace(/(<([^>]+)>)/ig, ""));
-				});
-				return privateResult.get();
-			}).catch(function (err) {
-				console.log(err);
-			});
-		}
-	}
+
 }, { platforms: ['slackSlashCommand'] });
 
-function tutorialCommand(message) {
-	reqArr = message.text.split(" ");
-	if (reqArr.length > 1) {
-		const topic = "lessons";
-		searchTerm = reqArr.join(" ");
-		url = baseURL + "?q=" + searchTerm + "&topic=" + topic;
-		return rp(setOptions(url)).then((data) =>{
-			const privatResultWithTopic = new slackTemplate("The tutorial results for your : " + searchTerm + " search are:");
-			data.documents.forEach(function (entry, i) {
-				i = i + 1;
-				return privatResultWithTopic.addAttachment('A1').addTitle(entry.title, entry.url).addText(entry.excerpt);
-			});
-			return privatResultWithTopic.get();
-		}).catch(function (err) {
-			console.log(err);
-		});
-	}
+
+function handleShowCommand(requestParams){
+		let parsedIndex = parseInt(requestParams[0]),
+   		    index = parsedIndex !== NaN && parsedIndex >= 1 && parsedIndex <= 10 ? parsedIndex - 1 : 0;
+
+		return requestPromise(setOptions(url))
+			   	.then((data) => {
+				    const publicResultWithTopic = new slackTemplate(title);
+					return publicResultWithTopic.addAttachment('A1')
+												.addTitle(data.documents[index].title, data.documents[index].url)
+												.addText(sanitizeExerpt(data.documents[index].excerpt))
+												.channelMessage(true)
+												.get();
+					})
+				.catch(err =>console.log(err));
 }
+function handleSearchCommand(requestParams){
+			return requestPromise(setOptions(url))
+			.then((data) =>{
+				let privatResultWithTopic = new slackTemplate(title);
+				data.documents.forEach((entry, i)=> {
+					i++;
+					return privatResultWithTopic.addAttachment('A1')
+												.addTitle(i + ". " + entry.title, entry.url)
+												.addText(sanitizeExerpt(entry.excerpt));
+				});
+				return privatResultWithTopic.get();
+			})
+			.catch(err =>console.log(err));
+}
+function handleRandomCommand(requestParams){
+	//TODO
+}
+
+function handleTutorialCommand(message) {
+	//TODO
+}
+
 function sanitizeExerpt(text) {
 	return text.replace(/(<([^>]+)>)/ig, "");
+}
+function getWelcomeMessage(username){
+	return "Hello " + username + "! \n I am MDN bot and will make your developers life easier, by searching MDN for you. \n If you use */mdnbot-search* you'll get results visible only to you. Example: `/mdnbot-search window.open js` \n If you want to show some of the results to a fellow developer use */mdnbot-show* command and I'll show the result you asked me to. Example: `/mdnbot-show 2 window.open js` \n It helps if you type a topic as last word. Happy mdn-searching!"
 }
