@@ -8,7 +8,8 @@ module.exports = botBuilder(function (message) {
 		topic,
 		index,
 		url,
-		reqArr;
+		reqArr,
+		baseURL="https://developer.mozilla.org/en-US/search.json";
 	if(message.originalRequest.command === "/mdnbot") {
 		 return {
 			"mrkdwn": true,
@@ -23,7 +24,7 @@ module.exports = botBuilder(function (message) {
 		if(reqArr.length > 2) {
 			topic = reqArr.splice(reqArr.length - 1)[0];
 			q = reqArr.slice(1).join(" ");
-			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "?topic=" + topic;
+			url = "https://developer.mozilla.org/en-US/search.json?q=" + q + "&topic=" + topic;
 			return rp(setOptions(url))
 			.then(function (data) {
 				var publicResultWithTopic = new slackTemplate("The result of search for: " + q + " topic: " + topic);
@@ -87,3 +88,27 @@ module.exports = botBuilder(function (message) {
 		}
 	}
 }, { platforms: ['slackSlashCommand'] });
+
+function tutorialCommand(message){
+	 reqArr = message.text.split(" ");
+	 if(reqArr.length > 1) {
+		var topic = "lessons" 
+		searchTerm = reqArr.join(" ");
+		url = baseURL+"?q=" + searchTerm + "&topic=" + topic;
+		return rp(setOptions(url))
+		.then(function (data) {
+			var privatResultWithTopic = new slackTemplate("The tutorial results for your : " + searchTerm + " search are:");
+			data.documents.forEach(function (entry, i) {
+				i = i + 1;
+				return privatResultWithTopic.addAttachment('A1').addTitle(entry.title, entry.url).addText(entry.excerpt);
+			});
+			return privatResultWithTopic.get();
+		})
+		.catch(function (err) {
+			console.log(err); 
+		});
+	}
+}
+function sanitizeExerpt(text){
+  return text.replace(/(<([^>]+)>)/ig,"");
+}
