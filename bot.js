@@ -17,13 +17,23 @@ module.exports = botBuilder(function(message) {
     switch (command) {
         case helpers.WELCOME_COMMAND:
             return helpers.welcome(message.originalRequest.user_name);
+        
         case helpers.SHOW_COMMAND:
-            return helpers.show(reqArr, url, title);
+            var parsedIndex = parseInt(reqArr[reqArr.length - 1]);
+            var index = parsedIndex !== NaN && parsedIndex >= 1 && parsedIndex <= 10 ? parsedIndex - 1 : 0;
+            return helpers.show(reqArr, url, title,index);
+        
         case helpers.SEARCH_COMMAND:
-            return helpers.search(reqArr, url, topic);
-            // case helpers.RANDOM_COMMAND:
-            //     return handleRandomCommand(reqArr, url, topic);
-            // case helpers.TUTORIAL_COMMAND:
+            return helpers.search(reqArr, url, title);
+        
+        case helpers.RANDOM_COMMAND:
+             q = helpers.randomData[Math.floor(Math.random() * helpers.randomData.length)];
+             url = helpers.BASE_URL+"?q=" + q;
+             title = "Your random search for:"+q;
+             var index = Math.floor(Math.random() * 10);
+            return helpers.show(reqArr, url, title,index);
+           
+         // case helpers.TUTORIAL_COMMAND:
             //     return handleTutorialCommand(reqArr, url);
         default:
             console.log("No command was identified!");

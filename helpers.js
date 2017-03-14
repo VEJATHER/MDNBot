@@ -36,11 +36,8 @@ function handleWelcomeCommand(username) {
 
 }
 
-function handleShowCommand(requestParams, url, title) {
-    var parsedIndex = parseInt(requestParams[requestParams.length - 1]);
-    var index = parsedIndex !== NaN && parsedIndex >= 1 && parsedIndex <= 10 ? parsedIndex - 1 : 0;
-
-    return promise(this.setOptions(url)).then(function(data) {
+function handleShowCommand(requestParams, url, title,index) {
+    return promise(setOptions(url)).then(function(data) {
         var publicResultWithTopic = new slackTemplate(title);
         return publicResultWithTopic.addAttachment('A1')
             .addTitle(data.documents[index].title, data.documents[index].url)
@@ -53,11 +50,11 @@ function handleShowCommand(requestParams, url, title) {
 }
 
 function handleSearchCommand(requestParams,url,title) {
-    return promise(this.setOptions(url)).then(function(data) {
+    return promise(setOptions(url)).then(function(data) {
         var privatResultWithTopic = new slackTemplate(title);
         data.documents.forEach(function(entry, i) {
             i++;
-            return privatResultWithTopic.addAttachment('A1')
+            return privatResultWithTopic.addAttachment('A'+i)
                 .addTitle(i + ". " + entry.title, entry.url)
                 .addText(sanitizeExerpt(entry.excerpt));
         });
@@ -67,26 +64,6 @@ function handleSearchCommand(requestParams,url,title) {
     });
 }
 
-function handleRandomCommand(requestParams) {
-    q = randomData[Math.floor(Math.random() * randomData.length)];
-    url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
-    return rp(setOptions(url)).then(function(data) {
-        var randomResult = new slackTemplate("The results of search for: " + q);
-        data.documents.forEach(function(entry, i) {
-            i = i + 1;
-            return randomResult.addAttachment('A1')
-                .addTitle(i + ". " + entry.title, entry.url)
-                .addText(entry.excerpt.replace(/(<([^>]+)>)/ig, ""));
-        });
-        return randomResult.get();
-    }).catch(function(err) {
-        console.log(err);
-    });
-}
-
-function handleTutorialCommand(message) {
-    //TODO
-}
 
 function sanitizeExerpt(text) {
     return text.replace(/(<([^>]+)>)/ig, "");
@@ -114,7 +91,5 @@ module.exports = {
     setOptions: setOptions,
     welcome: handleWelcomeCommand,
     show: handleShowCommand,
-    search: handleSearchCommand,
-    random: handleRandomCommand,
-    tutorial: handleTutorialCommand
+    search: handleSearchCommand
 };
