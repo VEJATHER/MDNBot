@@ -3,7 +3,9 @@
 let botBuilder = require('claudia-bot-builder'),
     slackTemplate = botBuilder.slackTemplate,
     promise = require('request-promise'),
-    setOptions = require("./helpers").setOptions;
+    setOptions = require("./helpers").setOptions,
+    randomData = helpers.randomData;
+
 
 const BASE_URL = "https://developer.mozilla.org/en-US/search.json",
     WELCOME_COMMAND = "/mdnbot",
@@ -50,8 +52,8 @@ function handleWelcomeCommand(message) {
 }
 
 function handleShowCommand(requestParams) {
-    let parsedIndex = parseInt(requestParams[0]),
-        index = parsedIndex !== NaN && parsedIndex >= 1 && parsedIndex <= 10 ? parsedIndex - 1 : 0;
+    let parssedIndex = parseInt(reqArr[reqArr.length - 1]),
+		index = parssedIndex !== NaN && parssedIndex >= 1 && parssedIndex <= 10 ? parssedIndex - 1 : 0;
 
     return promise(setOptions(url))
         .then((data) => {
@@ -81,7 +83,20 @@ function handleSearchCommand(requestParams) {
 }
 
 function handleRandomCommand(requestParams) {
-    //TODO
+  		q = randomData[Math.floor(Math.random() * randomData.length)];
+		url = "https://developer.mozilla.org/en-US/search.json?q=" + q;
+		return rp(setOptions(url))
+		.then(function (data) {
+			var randomResult = new slackTemplate("The results of search for: " + q);
+			data.documents.forEach(function (entry, i) {
+				i = i + 1;
+				return randomResult.addAttachment('A1').addTitle(i + ". " + entry.title, entry.url).addText(entry.excerpt.replace(/(<([^>]+)>)/ig,""));
+			});
+			return randomResult.get();
+		})
+		.catch(function (err) {
+			console.log(err); 
+		});
 }
 
 function handleTutorialCommand(message) {
@@ -93,5 +108,5 @@ function sanitizeExerpt(text) {
 }
 
 function getWelcomeMessage(username) {
-    return "Hello " + username + "! \n I am MDN bot and will make your developers life easier, by searching MDN for you. \n If you use */mdnbot-search* you'll get results visible only to you. Example: `/mdnbot-search window.open js` \n If you want to show some of the results to a fellow developer use */mdnbot-show* command and I'll show the result you asked me to. Example: `/mdnbot-show 2 window.open js` \n It helps if you type a topic as last word. Happy mdn-searching!"
+    return "Hello " + message.originalRequest.user_name + "! I am MDN bot and will make your developers life easier, by searching MDN for you. \n */mdnbot-search [searchTerm] [searchTopic]* will give results visible only to you. \n */mdnbot-show [searchTerm] [searchTopic] [itemNumber]* command will make particular item visible for all. \n */mdnbot-random* will do a random search \n */mdnbot* will display this welcome text. Happy mdn-searching!";
 }
