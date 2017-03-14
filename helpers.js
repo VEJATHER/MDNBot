@@ -4,16 +4,16 @@ var slackTemplate = botBuilder.slackTemplate;
 var promise = require('request-promise');
 
 
-var randomSearches = ["from()", "concat()", "every()", "fill()",
-    "filter()", "pop()", "push()", "reverse()",
-    "shift()", "sort()", "splice()", "unshift()",
-    "forEach()", "map()", "reduce()", "keys()", "some()",
-    "join()", "toString()", "Element", "Event", "NodeList",
+var randomSearches = ["from", "concat", "every", "fill",
+    "filter", "pop", "push", "reverse",
+    "shift", "sort", "splice", "unshift",
+    "forEach", "map", "reduce", "keys", "some",
+    "join", "toString", "Element", "Event", "NodeList",
     "box-model", "animation", "p", "div", "span",
     "ul", "ol", "li", "img", "form", "input", "color",
-    "background", "width", "arguments", "apply()", "bind()",
-    "call()", "Object.assign()", "Object.create()",
-    "values()", "hasOwnProperty()", "defineProperty()", "new", "const"
+    "background", "width", "arguments", "apply", "bind",
+    "call", "Object.assign", "Object.create",
+    "values", "hasOwnProperty", "defineProperty", "new", "const"
 ];
 
 
@@ -36,7 +36,7 @@ function handleWelcomeCommand(username) {
 
 }
 
-function handleShowCommand(requestParams, url, title,index) {
+function handleShowCommand(url, title,index) {
     return promise(setOptions(url)).then(function(data) {
         var publicResultWithTopic = new slackTemplate(title);
         return publicResultWithTopic.addAttachment('A1')
@@ -49,7 +49,7 @@ function handleShowCommand(requestParams, url, title,index) {
     });
 }
 
-function handleSearchCommand(requestParams,url,title) {
+function handleSearchCommand(url,title) {
     return promise(setOptions(url)).then(function(data) {
         var privatResultWithTopic = new slackTemplate(title);
         data.documents.forEach(function(entry, i) {

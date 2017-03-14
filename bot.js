@@ -21,7 +21,7 @@ module.exports = botBuilder(function(message) {
         case helpers.SHOW_COMMAND:
             var parsedIndex = parseInt(reqArr[reqArr.length - 1]);
             var index = parsedIndex !== NaN && parsedIndex >= 1 && parsedIndex <= 10 ? parsedIndex - 1 : 0;
-            return helpers.show(reqArr, url, title,index);
+            return helpers.show(url, title,index);
         
         case helpers.SEARCH_COMMAND:
             return helpers.search(reqArr, url, title);
@@ -29,12 +29,13 @@ module.exports = botBuilder(function(message) {
         case helpers.RANDOM_COMMAND:
              q = helpers.randomData[Math.floor(Math.random() * helpers.randomData.length)];
              url = helpers.BASE_URL+"?q=" + q;
-             title = "Your random search for:"+q;
+             title = "Your random search: "+q;
              var index = Math.floor(Math.random() * 10);
-            return helpers.show(reqArr, url, title,index);
-           
-         // case helpers.TUTORIAL_COMMAND:
-            //     return handleTutorialCommand(reqArr, url);
+            return helpers.show(reqArr, url, title,index);  
+        case helpers.TUTORIAL_COMMAND:
+              var url = helpers.BASE_URL+"?=q="+q+"&type=guide&skill=beginner";
+              title = "Your "+q+" tutorials search results:";   
+             return helpers.search(url, title);
         default:
             console.log("No command was identified!");
     };
