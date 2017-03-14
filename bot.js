@@ -19,8 +19,8 @@ module.exports = botBuilder(function(message) {
             return helpers.welcome(message.originalRequest.user_name);
         case helpers.SHOW_COMMAND:
             return helpers.show(reqArr, url, title);
-            // case helpers.SEARCH_COMMAND:
-            //     return handleSearchCommand(reqArr, url, topic);
+        case helpers.SEARCH_COMMAND:
+            return helpers.search(reqArr, url, topic);
             // case helpers.RANDOM_COMMAND:
             //     return handleRandomCommand(reqArr, url, topic);
             // case helpers.TUTORIAL_COMMAND:
