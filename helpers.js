@@ -52,13 +52,23 @@ function handleShowCommand(url, title,index) {
 function handleSearchCommand(url,title) {
     return promise(setOptions(url)).then(function(data) {
         var privatResultWithTopic = new slackTemplate(title);
-        data.documents.forEach(function(entry, i) {
-            i++;
-            return privatResultWithTopic.addAttachment('A'+i)
-                .addTitle(i + ". " + entry.title, entry.url)
-                .addText(sanitizeExerpt(entry.excerpt));
-        });
-        return privatResultWithTopic.get();
+        if(data){
+                data.documents.forEach(function(entry, i) {
+                i++;
+                return privatResultWithTopic.addAttachment('A'+i)
+                    .addTitle(i + ". " + entry.title, entry.url)
+                    .addText(sanitizeExerpt(entry.excerpt));
+            });
+            return privatResultWithTopic.get();        
+        }else{
+              return {
+                "mrkdwn": true,
+                "response_type": "in_channel",
+                "text": "No results found!"
+            };
+        }
+        
+        
     }).catch(function(err) {
         return console.log(err);
     });
@@ -72,10 +82,10 @@ function sanitizeExerpt(text) {
 function getWelcomeMessage(username) {
     return "Hello " + username +
            "! I am MDN bot and will make your developers life easier, by searching MDN for you. "
-            + "\n *`/mdnbot-search [searchTerm] [searchTopic]`* will give results visible only to you." 
-            + " \n *`/mdnbot-show [searchTerm] [searchTopic] [itemNumber]`* command will make particular item visible for all. " 
-            + "\n *`/mdnbot-random`* will do a random search " 
-            + "\n *`/mdnbot`* will display this welcome text. Happy mdn-searching!";
+            + "\n */mdnbot-search [searchTerm] [searchTopic]* will give results visible only to you." 
+            + " \n */mdnbot-show [searchTerm] [searchTopic] [itemNumber]`* command will make particular item visible for all. " 
+            + "\n */mdnbot-random* will do a random search " 
+            + "\n */mdnbot* will display this welcome text. Happy mdn-searching!";
 }
 
 module.exports = {

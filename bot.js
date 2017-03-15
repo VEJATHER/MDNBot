@@ -24,16 +24,16 @@ module.exports = botBuilder(function(message) {
             return helpers.show(url, title,index);
         
         case helpers.SEARCH_COMMAND:
-            return helpers.search(reqArr, url, title);
+            return helpers.search(url, title);
         
         case helpers.RANDOM_COMMAND:
              q = helpers.randomData[Math.floor(Math.random() * helpers.randomData.length)];
              url = helpers.BASE_URL+"?q=" + q;
              title = "Your random search: "+q;
              var index = Math.floor(Math.random() * 10);
-            return helpers.show(reqArr, url, title,index);  
+            return helpers.show(url, title,index);  
         case helpers.TUTORIAL_COMMAND:
-              var url = helpers.BASE_URL+"?=q="+q+"&type=guide&skill=beginner";
+              var url = helpers.BASE_URL+"?q="+q+"&type=guide&skill=beginner";
               title = "Your "+q+" tutorials search results:";   
              return helpers.search(url, title);
         default:
