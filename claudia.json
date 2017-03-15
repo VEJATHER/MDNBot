@@ -5,7 +5,7 @@
     "region": "eu-west-2"
   },
   "api": {
-    "id": "0kcg00hofa",
-    "module": "bot"
+    "id": "hzidlpj242",
+    "module": "bin/bot"
   }
 }

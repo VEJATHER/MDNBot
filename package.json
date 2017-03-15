@@ -4,12 +4,13 @@
   "description": "MDN search bot",
   "main": "index.js",
   "scripts": {
-    "deploy": "claudia create --region eu-west-2 --use-local-dependencies --api-module bot",
-    "update": "claudia update --use-local-dependencies",
-    "configure-facebook": "claudia update --configure-fb-bot",
-    "configure-skype": "claudia update --configure-skype-bot",
-    "configure-telegram": "claudia update --configure-telegram-bot",
-    "configure-slack": "claudia update --use-local-dependencies  --configure-slack-slash-app",
+    "transpile": "babel --presets es2015 src --out-dir bin",
+    "deploy": "npm run transpile && claudia create --region eu-west-2 --use-local-dependencies --api-module bin/bot",
+    "update": "npm run transpile && claudia update --use-local-dependencies --api-module bin/bot",
+    "configure-facebook": "npm run transpile && claudia update --configure-fb-bot",
+    "configure-skype": "npm run transpile && claudia update --configure-skype-bot",
+    "configure-telegram": "npm run transpile && claudia update --configure-telegram-bot",
+    "configure-slack": "npm run transpile && claudia update --use-local-dependencies  --configure-slack-slash-app",
     "start": "ntl"
   },
   "repository": {
@@ -28,6 +29,8 @@
   },
   "homepage": "https://github.com/VEJATHER/belugas-bot#readme",
   "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-preset-es2015": "^6.24.0",
     "claudia": "^2.9.0",
     "claudia-bot-builder": "^2.14.1",
     "ntl": "^1.2.0"
