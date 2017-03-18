@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VEJATHER/belugas-bot.git"
+    "url": "git+https://github.com/VEJATHER/MDNBot.git"
   },
   "keywords": [
     "mdn",
@@ -25,9 +25,9 @@
   "author": "VEJATHER",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/VEJATHER/belugas-bot/issues"
+    "url": "https://github.com/VEJATHER/MDNBot/issues"
   },
-  "homepage": "https://github.com/VEJATHER/belugas-bot#readme",
+  "homepage": "https://github.com/VEJATHER/MDNBot#readme",
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-preset-es2015": "^6.24.0",
