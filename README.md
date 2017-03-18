@@ -16,4 +16,4 @@ Commands:
 
 For detailed instructions and installation visit our [landing page](https://vejather.github.io/mdn-bot-landing-page/)
 
-Built with [claudia-bot-builder](https://github.com/claudiajs/claudia-bot-builder).
+Built with [claudia-bot-builder](https://github.com/claudiajs/claudia-bot-builder)
