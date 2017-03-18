@@ -1,4 +1,4 @@
-# belugas-bot
+# MDNBot
 
 To setup
 1. clone repository with git clone https://github.com/VEJATHER/belugas-bot.git
