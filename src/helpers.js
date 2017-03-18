@@ -73,11 +73,12 @@ function sanitizeExerpt(text) {
 
 function getWelcomeMessage(username) {
     return "Hello " + username +
-           "! I am MDN bot and will make your developers life easier, by searching MDN for you. "
-            + "\n */mdnbot-search [searchTerm] [searchTopic]* will give results visible only to you." 
-            + " \n */mdnbot-show [searchTerm] [searchTopic] [itemNumber]`* command will make particular item visible for all. " 
+           "! I am MDN bot and will make your developers life easier, by searching MDN for you."
+            + "\n\n */mdnbot-search [searchTerm] [searchTopic]* will give results visible only to you." 
+            + "\n */mdnbot-show [searchTerm] [searchTopic] [itemNumber]* command will make particular item visible for all. " 
             + "\n */mdnbot-random* will do a random search " 
-            + "\n */mdnbot* will display this welcome text. Happy mdn-searching!";
+            + "\n */mdnbot* will display this welcome text. Happy mdn-searching!"
+            + "\n\n Need help or have an issue to report? You can find me on <https://vejather.github.io/mdn-bot-landing-page/|Github>";
 }
 
 module.exports = {
