@@ -6,8 +6,11 @@ Slack Bot that helps developers search MDN directory without leaving slack chann
 Commands:
 
 **/mdnbot**
+
 **/mdnbot-search [searchTerm] [searchTopic]**
+
 **/mdnbot-show [searchTerm] [searchTopic] [itemNumber]**
+
 **/mdnbot-random**
 
 
