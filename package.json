@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "transpile": "babel --presets es2015 src --out-dir bin",
-    "deploy": "npm run transpile && claudia create --region eu-west-2 --use-local-dependencies --api-module bin/bot",
-    "update": "npm run transpile && claudia update --use-local-dependencies --api-module bin/bot",
-    "configure-facebook": "npm run transpile && claudia update --configure-fb-bot",
-    "configure-skype": "npm run transpile && claudia update --configure-skype-bot",
-    "configure-telegram": "npm run transpile && claudia update --configure-telegram-bot",
+    "deploy": "claudia create --region eu-west-2 --use-local-dependencies --api-module index",
+    "update": "claudia update --use-local-dependencies --api-module index",
+    "configure-facebook": "claudia update --configure-fb-bot",
+    "configure-skype": "claudia update --configure-skype-bot",
+    "configure-telegram": "claudia update --configure-telegram-bot",
     "configure-slack": "claudia update --use-local-dependencies  --configure-slack-slash-app",
     "start": "ntl"
   },
