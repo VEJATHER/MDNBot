@@ -10,7 +10,7 @@
     "configure-facebook": "npm run transpile && claudia update --configure-fb-bot",
     "configure-skype": "npm run transpile && claudia update --configure-skype-bot",
     "configure-telegram": "npm run transpile && claudia update --configure-telegram-bot",
-    "configure-slack": "npm run transpile && claudia update --use-local-dependencies  --configure-slack-slash-app",
+    "configure-slack": "npm run claudia update --use-local-dependencies  --configure-slack-slash-app",
     "start": "ntl"
   },
   "repository": {
