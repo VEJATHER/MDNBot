@@ -10,7 +10,7 @@
     "configure-facebook": "claudia update --configure-fb-bot",
     "configure-skype": "claudia update --configure-skype-bot",
     "configure-telegram": "claudia update --configure-telegram-bot",
-    "configure-slack": "claudia update --configure-slack-slash-app",
+    "configure-slack": "claudia update --use-local-dependencies --configure-slack-slash-app",
     "start": "ntl"
   },
   "repository": {
