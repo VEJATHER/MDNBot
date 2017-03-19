@@ -56,7 +56,7 @@ function sanitizeExerpt(text) {
 }
 
 function getWelcomeMessage(username) {
-    return "Hello " + username + "! I am MDN bot and will make your developers life easier, by searching MDN for you. " + "\n */mdnbot-search [searchTerm] [searchTopic]* will give results visible only to you." + " \n */mdnbot-show [searchTerm] [searchTopic] [itemNumber]`* command will make particular item visible for all. " + "\n */mdnbot-random* will do a random search " + "\n */mdnbot* will display this welcome text. Happy mdn-searching!";
+    return "Hello " + username + "! I'm MDNBot and will make your life as a developer easier, by searching MDN for you." + "\n\n */mdnbot-search [searchTerm] [searchTopic]* will give results visible only to you." + "\n */mdnbot-show [searchTerm] [searchTopic] [itemNumber]* command will make particular item visible for all. " + "\n */mdnbot-random* will do a random search " + "\n */mdnbot* will display this welcome text." + "\n *Happy MDN-searching!*" + "\n\n <https://github.com/VEJATHER/belugas-bot/|Github> | <https://vejather.github.io/mdn-bot-landing-page/|MDNBot>";
 }
 
 module.exports = {
