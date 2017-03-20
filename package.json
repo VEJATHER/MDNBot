@@ -2,15 +2,16 @@
   "name": "belugas-bot",
   "version": "1.0.0",
   "description": "MDN search bot",
-  "main": "index.js",
+  "main": "bin/bot.js",
   "scripts": {
     "transpile": "babel --presets es2015 src --out-dir bin",
-    "deploy": "npm run transpile && claudia create --region eu-west-2 --use-local-dependencies --api-module bin/bot",
-    "update": "npm run transpile && claudia update --use-local-dependencies --api-module bin/bot",
-    "configure-facebook": "npm run transpile && claudia update --configure-fb-bot",
-    "configure-skype": "npm run transpile && claudia update --configure-skype-bot",
-    "configure-telegram": "npm run transpile && claudia update --configure-telegram-bot",
-    "configure-slack": "npm run transpile && claudia update --use-local-dependencies  --configure-slack-slash-app",
+    "deploy": "claudia create --region eu-west-2 --use-local-dependencies --api-module bin/bot",
+    "undeploy": "claudia destroy",
+    "update": "claudia update --use-local-dependencies --api-module bin/bot",
+    "configure-facebook": "claudia update --configure-fb-bot",
+    "configure-skype": "claudia update --configure-skype-bot",
+    "configure-telegram": "claudia update --configure-telegram-bot",
+    "configure-slack": "claudia update --use-local-dependencies --configure-slack-slash-app",
     "start": "ntl"
   },
   "repository": {

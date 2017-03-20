@@ -35,5 +35,4 @@ module.exports = botBuilder(function(message) {
         default:
             console.log("No command was identified!");
     };
-
-}, { platforms: ['slackSlashCommand'] });
+});
