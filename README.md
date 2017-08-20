@@ -16,7 +16,7 @@ You can install it by hitting the Add to Slack button on the langing page https:
 
 
 ## Setup
-If you wish to tinker with the slackbot commands, clone this repo and run the npm install in the root folder. You will have to setup Amazon Lambda functions and a slack app to be able to run it in your slack client. Read the more about this process [here](https://medium.com/chingu/mdnbot-coding-journey-b20316a88163).
+If you wish to tinker with the slackbot commands, clone this repo and run the npm install in the root folder. You will have to setup Amazon Lambda functions and a slack app to be able to run it in your slack client. Read the more about this process [here](https://medium.com/@veraalina/mdnbot-coding-journey-38f4dc773da0).
 
 ## Privacy Policy
 
